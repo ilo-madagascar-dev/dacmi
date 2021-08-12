@@ -10,8 +10,31 @@
         <div>
             <h1>Registration</h1>
             <form id="reg-form">
-                <input type="text" name="username" id="username" placeholder="Username" autocomplete="off">
-                <input type="password" name="password" id="password" placeholder="password" autocomplete="off">
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" name="firstname" id="firstname" placeholder="First name" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" name="secondname" id="secondname" placeholder="Second name" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" name="email" id="email" placeholder="E-mail" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="password" name="password" id="password" placeholder="password" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm password" autocomplete="off">
+                </div>  
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" name="phonenumber" id="phonenumber" placeholder="Phone number" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="checkbox" name="renemberme" id="renemberme"> Se souvenir de moi
+                </div>
+                <div style="margin-bottom: 0.5rem;">
+                    <input type="checkbox" name="subscribenews" id="subscribenews"> S'abonner aux newsletters
+                </div>
+                
                 <input type="submit" value="Submit form">
             </form>
 
@@ -23,8 +46,16 @@
                 {
                     event.preventDefault();
 
-                    const username = document.getElementById('username').value;
+                    const firstname = document.getElementById('firstname').value;
+                    const secondname = document.getElementById('secondname').value;
+                    const email = document.getElementById('email').value;
                     const password = document.getElementById('password').value;
+                    const confirmpassword = document.getElementById('confirmpassword').value;
+                    const phonenumber = document.getElementById('phonenumber').value;
+                    const renemberme = document.getElementById('renemberme').checked;
+                    const subscribenews = document.getElementById('subscribenews').checked;
+
+                    console.log(renemberme, subscribenews);
 
                     const result = await fetch('/api/register', {
                         method: "POST",
@@ -32,8 +63,14 @@
                             'Content-type': 'application/json'
                         },
                         body: JSON.stringify({
-                            username, 
-                            password
+                            firstname,
+                            secondname,
+                            email, 
+                            password,
+                            confirmpassword,
+                            phonenumber,
+                            renemberme,
+                            subscribenews
                         })
                     }).then((res) => res.json());
 
