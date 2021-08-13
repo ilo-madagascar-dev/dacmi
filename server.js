@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/dacmi', {
 
 const app = express();
 
-app.use('/', express.static(path.join(__dirname, 'static')));
+//app.use('/', express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.json());
 
 
@@ -76,7 +76,9 @@ app.post('/api/login', async (req, res) => {
             email: user.email
         }, JWT_SECRET);
 
-        return res.json({status:'ok', data:{email, password, token}});
+        const userPassword = user.password;
+
+        return res.json({status:'ok', data:{email, userPassword, token}});
     }
 
     res.json({status: 'error', error:'Invalid credentials'});
@@ -84,7 +86,7 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/register', async (req, res) => {
     
-    let {firstname, secondname, email, password:plainTextPassword, confirmpassword, phonenumber, renemberme, subscribenews} = req.body;
+    let {firstname, lastname, email, password:plainTextPassword, passwordre:confirmpassword, phone, remember, news} = req.body;
     
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const emailVerification = re.test(String(email).toLowerCase());
@@ -115,16 +117,16 @@ app.post('/api/register', async (req, res) => {
         return res.json({status: 'error', error: 'Le mot de passe et la confirmation du mot de passe doivent être les mêmes !!!'});
     }
 
-    if(renemberme == true){
-        renemberme = true;
+    if(remember == true){
+        remember = true;
     }else {
-        renemberme = false;
+        remember = false;
     }
 
-    if(subscribenews == true){
-        subscribenews = true;
+    if(news == true){
+        news = true;
     }else {
-        subscribenews = false;
+        news = false;
     }
 
     const password = await bcrypt.hashSync(plainTextPassword, 10);
@@ -133,11 +135,11 @@ app.post('/api/register', async (req, res) => {
         const response = await User.create({
             email,
             firstname,
-            secondname, 
+            lastname, 
             password,
-            phonenumber,
-            renemberme,
-            subscribenews
+            phone,
+            remember,
+            news
         });
 
         console.log(response);

@@ -4,11 +4,11 @@ const UserSchema = new mongoose.Schema(
 {
     email: {type:String, required:true, unique:true},
     firstname: {type:String, required:true},
-    secondname: {type:String, required:true},
+    lastname: {type:String, required:true},
     password: {type:String, required:true},
-    phonenumber: {type:String, required:true},
-    renemberme: {type:Boolean, required:true},
-    subscribenews: {type:Boolean, required:true}
+    phone: {type:String, required:true},
+    remember: {type:Boolean, required:true},
+    news: {type:Boolean, required:true}
 }, 
 { 
     collection: 'users'
